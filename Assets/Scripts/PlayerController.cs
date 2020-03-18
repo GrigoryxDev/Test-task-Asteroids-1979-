@@ -106,8 +106,8 @@ public class PlayerController : Singleton<PlayerController>
         yield return new WaitForSeconds(_time);
         if (Hp > 0)
         {
+            IsInvincible = true;
             Animator.Play("PlayerIdleAnim");
-            StartCoroutine(Invincible(playerInvincibleyTime));
             transform.position = new Vector2(0, 0);
             isDestroyed = false;
         }
