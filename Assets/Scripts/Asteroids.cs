@@ -2,6 +2,7 @@
 
 public class Asteroids : EnemyControllerBase
 {
+
     public enum AsteroidsType
     {
         Large,
@@ -14,13 +15,22 @@ public class Asteroids : EnemyControllerBase
     private GameObject m_AsteroidMed;
     private GameObject m_AsteroidSmall;
 
-    public GameObject AsteroidMed { get => m_AsteroidMed !=null?m_AsteroidMed:m_AsteroidMed = Resources.Load<GameObject>("AsteroidMed"); }
+    public GameObject AsteroidMed { get => m_AsteroidMed != null ? m_AsteroidMed : m_AsteroidMed = Resources.Load<GameObject>("AsteroidMed"); }
     public GameObject AsteroidSmall { get => m_AsteroidSmall != null ? m_AsteroidSmall : m_AsteroidSmall = Resources.Load<GameObject>("AsteroidSmall"); }
 
     void Start()
     {
+
         StartMoving();
     }
+
+    /// <summary>
+    ///Laser contact(player shot)
+    ///We take away hp, reproduce the sound of the hit, destroy the laser.
+    ///If the object's hp is less than 0, we check asteroid type 
+    ///and if it large or medium with some chance spawn random amount of little asteroids.
+    ///If the asteroid is small or the chance didn’t work, we destroy the asteroid
+    /// </summary>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

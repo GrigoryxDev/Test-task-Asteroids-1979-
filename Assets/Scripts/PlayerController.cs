@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
 {
-
     [SerializeField] private float rotateSpeed = 256f;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float hp = 3f;
@@ -32,6 +31,7 @@ public class PlayerController : Singleton<PlayerController>
     }
     private void Update()
     {
+
         if (IsInvincible)
         {
             StartCoroutine(Invincible(playerInvincibleyTime));
@@ -40,6 +40,11 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FixedUpdate()
     {
+        /// <summary>
+        /// Control buttons, for mobile platforms we can implement a joystick 
+        /// and tap for attack
+        /// </summary>
+
         if (!isDestroyed)
         {
             if (Input.GetKeyDown(KeyCode.F))
@@ -68,6 +73,10 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    /// <summary>
+    /// Contact with the enemy, if the player is not destroyed and not invulnerable, 
+    /// run the coroutine
+    /// </summary>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -78,6 +87,14 @@ public class PlayerController : Singleton<PlayerController>
             }
         }
     }
+
+    /// <summary>
+    /// Coroutine for taking damage. We Play explosion sound, reduce hp,
+    /// activate destroyed status for freeze player input,play explosion animation, 
+    /// if our hp more than zero, play default animation, 
+    /// start coroutine for status of invincble, teleport player to 0.0 coordinates,
+    /// and turn off destroyed status
+    /// </summary>
 
     IEnumerator GetDamage(float _time)
     {
@@ -93,11 +110,16 @@ public class PlayerController : Singleton<PlayerController>
             transform.position = new Vector2(0, 0);
             isDestroyed = false;
         }
-        else
+        else //if our hp equal zero destroy player
         {
             Destroy(gameObject);
         }
     }
+
+    /// <summary>
+    /// Coroutine of player  invincible.
+    /// Change player color and disable invincible after indicated time
+    /// </summary>
     IEnumerator Invincible(float _time)
     {
         SpriteRenderer.color = Color.green;

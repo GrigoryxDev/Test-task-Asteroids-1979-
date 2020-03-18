@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// The base class of all enemy objects, with common functionality
+/// </summary>
 public abstract class EnemyControllerBase : MonoBehaviour
 {
-
     private GameObject m_ExplosionPrefab;
     [SerializeField] private float speed;
     [SerializeField] private float hp;
@@ -21,9 +21,16 @@ public abstract class EnemyControllerBase : MonoBehaviour
 
     public virtual void Update()
     {
+        /// <summary>
+        /// moving in front, in world coordinates
+        /// </summary>
         transform.Translate(transform.up * Speed * Time.deltaTime, Space.World);
     }
 
+
+    /// <summary>
+    /// Indicate the direction of movement
+    /// </summary>
     public virtual void StartMoving(float direction = 0.0f)
     {
         if (direction == 0.0f)
@@ -35,6 +42,11 @@ public abstract class EnemyControllerBase : MonoBehaviour
         transform.rotation = Quaternion.Euler(rotation);
     }
 
+
+    /// <summary>
+    /// Called upon destruction. Adds points, destroys itself, 
+    /// causes a prefab explosion
+    /// </summary>
     public virtual void Die()
     {
         Destroy(gameObject);

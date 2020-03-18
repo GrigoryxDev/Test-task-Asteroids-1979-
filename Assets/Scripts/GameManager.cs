@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     public GameObject ShipPrefab { get => m_ShipPrefab != null ? m_ShipPrefab : m_ShipPrefab = Resources.Load<GameObject>("Player"); }
     public PlayerController PlayerController { get => m_PlayerController != null ? m_PlayerController : m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
 
+    /// <summary>
+    /// Disable useless menu for start and active main menu
+    /// </summary>
     private void OnEnable()
     {
         MainMenu.SetActive(true);
@@ -40,6 +43,9 @@ public class GameManager : MonoBehaviour
         GameUI.SetActive(false);
     }
 
+    /// <summary>
+    /// Start first wave
+    /// </summary>
     private void Start()
     {
         StartNewWave();
@@ -47,10 +53,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+        //Check enemy number on scene and if it less than 1 (we kill everyone enemies) and game isn't over  
         if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1 && !gameOver)
         {
-            wave++;
+            wave++; //wave difficulty increase
             StartNewWave();
             PlayerController.IsInvincible = true;
         }
@@ -58,6 +64,9 @@ public class GameManager : MonoBehaviour
         GetGameInfo();
     }
 
+    /// <summary>
+    /// Menu bar controls
+    /// </summary>
     private void GameMenuContrl()
     {
         if (!isStarted && Input.GetKeyDown(KeyCode.Space))
@@ -74,33 +83,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Game UI info
+    /// </summary>
     private void GetGameInfo()
     {
         if (isStarted)
         {
-
-
             GameScore.text = $"{Score}";
             WaveNumber.text = $"{wave}";
 
 
-            livesNumber = (int)PlayerController.Hp;
+            
+            livesNumber = (int)PlayerController.Hp; //ui lives equals player lives(hp)
 
             for (int i = 0; i < Lives.Count; i++)
             {
+                //Change color of lost lives
                 Lives[i].color = i < livesNumber ? Lives[i].color = Color.white : Lives[i].color = Color.black;
             }
 
             if (livesNumber <= 0)
             {
+                //if we lost all lives ,we lose game 😥
                 EndGame();
             }
         }
     }
-
+    /// <summary>
+    /// Spawn new wave. Calculate random number of asteroids and ufo,instantiate it
+    /// </summary>
     private void StartNewWave()
     {
-
         enemyNumber = wave + enemyPlusPerWave;
         var asteroidsNumber = Random.Range(1, enemyNumber - 1);
         var ufoNumber = enemyNumber - asteroidsNumber;
@@ -113,12 +127,18 @@ public class GameManager : MonoBehaviour
             Instantiate(UFOPrefab, new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0), transform.rotation);
         }
     }
+    /// <summary>
+    /// Enable end game menu and activate game over status 
+    /// </summary>
     private void EndGame()
     {
         EndGameMenu.SetActive(true);
         gameOver = true;
     }
 
+    /// <summary>
+    /// Reset game.Destroy every enemy, change values to default
+    /// </summary>
     private void Reset()
     {
         EndGameMenu.SetActive(false);

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShotController : MonoBehaviour
@@ -14,6 +13,12 @@ public class ShotController : MonoBehaviour
     {
         StartCoroutine(Shoot(shotLifeTime)); 
     }
+
+    /// <summary>
+    /// Coroutine of player's shot.
+    /// Add force to attack prefab and destroy it after time
+    /// </summary>
+
 
     IEnumerator Shoot(float _time)
     {
