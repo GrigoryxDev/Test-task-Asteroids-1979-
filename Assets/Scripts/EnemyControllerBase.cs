@@ -10,11 +10,14 @@ public abstract class EnemyControllerBase : MonoBehaviour
     [SerializeField] private float hp;
     [SerializeField] private int enemyScore;
     private GameManager m_GameManager;
+    private AudioSource m_AudioSource;
 
     public GameObject ExplosionPrefab { get => m_ExplosionPrefab != null ? m_ExplosionPrefab : m_ExplosionPrefab = Resources.Load<GameObject>("Explosion"); }
     public float Speed { get => speed; set => speed = value; }
     public float Hp { get => hp; set => hp = value; }
     public GameManager Gamemanager { get => m_GameManager != null ? m_GameManager : m_GameManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>(); }
+    public AudioSource Audiosource { get => m_AudioSource != null ? m_AudioSource : m_AudioSource = GetComponent<AudioSource>(); }
+    public int EnemyScore { get => enemyScore; set => enemyScore = value; }
 
     public virtual void Update()
     {
@@ -35,8 +38,7 @@ public abstract class EnemyControllerBase : MonoBehaviour
     public virtual void Die()
     {
         Destroy(gameObject);
-        Gamemanager.Score += enemyScore;
+        Gamemanager.Score += EnemyScore;
         Instantiate(ExplosionPrefab, transform.position, transform.rotation);
     }
-
 }

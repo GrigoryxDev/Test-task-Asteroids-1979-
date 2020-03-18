@@ -27,6 +27,7 @@ public class Asteroids : EnemyControllerBase
         if (collision.gameObject.CompareTag("Shot"))
         {
             Hp--;
+            Audiosource.Play();
             Destroy(collision.gameObject);
             if (Hp <= 0)
             {

@@ -15,6 +15,7 @@ public class PlayerController : Singleton<PlayerController>
     private Rigidbody2D m_Rigidbody2d;
     private Animator m_Animator;
     private SpriteRenderer m_SpriteRenderer;
+    private AudioSource m_AudioSource;
 
 
     public GameObject ShootPrefab { get => m_ShootPrefab != null ? m_ShootPrefab : m_ShootPrefab = Resources.Load<GameObject>("ShootPrefab"); }
@@ -23,6 +24,7 @@ public class PlayerController : Singleton<PlayerController>
     public SpriteRenderer SpriteRenderer { get => m_SpriteRenderer != null ? m_SpriteRenderer : m_SpriteRenderer = GetComponent<SpriteRenderer>(); }
     public float Hp { get => hp; private set => hp = value; }
     public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
+    public AudioSource Audiosource { get => m_AudioSource != null ? m_AudioSource : m_AudioSource = GetComponent<AudioSource>(); }
 
     private void Start()
     {
@@ -79,6 +81,7 @@ public class PlayerController : Singleton<PlayerController>
 
     IEnumerator GetDamage(float _time)
     {
+        Audiosource.Play();
         Hp--;
         isDestroyed = true;
         Animator.Play("ExplosionAnimation");
@@ -99,7 +102,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SpriteRenderer.color = Color.green;
         yield return new WaitForSeconds(_time);
-        IsInvincible = false;
         SpriteRenderer.color = Color.white;
+        IsInvincible = false;
     }
 }

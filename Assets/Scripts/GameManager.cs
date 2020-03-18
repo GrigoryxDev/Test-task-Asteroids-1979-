@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private int livesNumber;
     [SerializeField] private int wave = 1;
     [SerializeField] private int enemyNumber;
-    [SerializeField] private int enemyPlusPerWave;
+    [SerializeField] private int enemyPlusPerWave = 1;
     public GameObject MainMenu;
     public GameObject EndGameMenu;
     public GameObject GameUI;
@@ -47,7 +47,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
+        
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1 && !gameOver)
         {
             wave++;
             StartNewWave();
