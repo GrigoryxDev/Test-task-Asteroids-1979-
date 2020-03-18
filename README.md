@@ -4,11 +4,11 @@
 
 Test implementation of Asteroids 1979.
 
-Сontrol buttons: A,D - rotation W - Acceleration F - Shot  SPACE  - start game
+Сontrol buttons 🎮 A,D - rotation W - Acceleration F - Shot  SPACE  - start game
 
-SFx from [here](https://github.com/Kavex/GameSounds)
+SFx from [here](https://github.com/Kavex/GameSounds) 🎼
 
-BackGround music:
+BackGround music 🎧
 
 Space Virus by Soulstorming | https://soundcloud.com/soulstorming
 
