@@ -153,5 +153,4 @@ public class GameManager : MonoBehaviour
         Instantiate(ShipPrefab, new Vector3(0, 0, 0), transform.rotation);
 
     }
-
 }

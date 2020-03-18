@@ -10,6 +10,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float playerInvincibleyTime = 2f;
     [SerializeField] private bool isInvincible;
     [SerializeField] private bool isDestroyed;
+    private bool invincibleUpdateBlock;
     private GameObject m_ShootPrefab;
     private Rigidbody2D m_Rigidbody2d;
     private Animator m_Animator;
@@ -31,9 +32,9 @@ public class PlayerController : Singleton<PlayerController>
     }
     private void Update()
     {
-
-        if (IsInvincible)
+        if (IsInvincible && !invincibleUpdateBlock)
         {
+            invincibleUpdateBlock = true;
             StartCoroutine(Invincible(playerInvincibleyTime));
         }
     }
@@ -126,5 +127,6 @@ public class PlayerController : Singleton<PlayerController>
         yield return new WaitForSeconds(_time);
         SpriteRenderer.color = Color.white;
         IsInvincible = false;
+        invincibleUpdateBlock = false;
     }
 }
