@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    
+    [SerializeField] private bool dontDestroy;
 
-    static T m_instance;
+    private static T m_instance;
 
     public static T Instance
     {
@@ -12,7 +13,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (m_instance == null)
             {
-                m_instance = GameObject.FindObjectOfType<T>();
+                m_instance = FindObjectOfType<T>();
 
                 if (m_instance == null)
                 {
@@ -20,17 +21,24 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     m_instance = singleton.AddComponent<T>();
                 }
             }
+
             return m_instance;
         }
     }
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         if (m_instance == null)
         {
             m_instance = this as T;
+
+            if (dontDestroy)
+            {
+                transform.parent = null;
+                DontDestroyOnLoad(gameObject);
+            }
         }
-        else
+        else if (m_instance != this)
         {
             Destroy(gameObject);
         }
