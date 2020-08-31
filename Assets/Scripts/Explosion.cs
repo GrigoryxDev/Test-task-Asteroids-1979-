@@ -8,15 +8,16 @@ using UnityEngine;
 public class Explosion : MonoBehaviour, IPooledObject
 {
     public PoolObjectsTag Tag { get; set; }
-
+    private Vector3 currentScaleVector;
     private void Update()
     {
+        transform.localScale = Vector3.Lerp(currentScaleVector, Vector3.zero, Time.deltaTime);
         transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime);
-        transform.localScale -= Vector3.one * -0.1f;
     }
 
     public void OnObjectSpawn()
     {
+        currentScaleVector = Vector3.one;
         App.Instance.SoundManager.PlaySFX(SoundsEnum.Explosion.ToString());
     }
 

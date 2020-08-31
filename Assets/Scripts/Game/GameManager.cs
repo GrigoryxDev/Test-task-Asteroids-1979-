@@ -24,6 +24,7 @@ namespace Scripts.Game
 
 
             StartNewWave();
+            SpawnPlayer();
         }
 
         public void UpdateScore(int score)
@@ -31,6 +32,13 @@ namespace Scripts.Game
             app.GameInitSettings.UpdateScore(app.GameInitSettings.Wave, score);
 
             UpdateUIText();
+        }
+
+        private void SpawnPlayer()
+        {
+            var player = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Player);
+            player.GetComponent<Player>().HP = PlayerLives;
+            player.transform.position = Vector3.zero;
         }
 
         public void DestroyPlayer()
@@ -41,6 +49,11 @@ namespace Scripts.Game
             if (PlayerLives <= 0)
             {
                 PlayerLives = 0;
+
+                EndGame();
+            }
+            else
+            {
 
             }
         }
@@ -65,7 +78,6 @@ namespace Scripts.Game
                 var asteroid = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
 
                 asteroid.transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0);
-
 
             }
             for (int i = 0; i < ufoNumber; i++)

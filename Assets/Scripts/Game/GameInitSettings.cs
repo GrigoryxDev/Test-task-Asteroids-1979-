@@ -4,16 +4,27 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameInitSettings", menuName = "ScriptableObjects/GameInitSettings", order = 0)]
 public class GameInitSettings : ScriptableObject
 {
-    [SerializeField, Header("Player's lives count")] private int livesNumber;
     [SerializeField, Header("First wave number")] private int wave = 1;
     [SerializeField, Header("Increase enemies per wave")] private int enemyPlusPerWave = 1;
+
     [SerializeField, Space(5)] private Enemies[] enemies;
     [SerializeField, Space(5)] private AsteroidSpawnChance[] asteroidSpawnChances;
+
+    [SerializeField, Header("Player settings")] private float rotateSpeed;
+    [SerializeField] private int livesNumber;
+    [SerializeField] private float speed;
+    [SerializeField] private float invincebleTime;
+
     private Dictionary<EnemiesType, Enemies> enemyDict;
+
+
     public GameData GameData { get; private set; }
     public int LivesNumber => livesNumber;
     public int Wave => wave;
     public int EnemyPlusPerWave => enemyPlusPerWave;
+    public float RotateSpeed => rotateSpeed;
+    public float Speed => speed;
+    public float InvincebleTime => invincebleTime;
 
     public void NewGameData()
     {

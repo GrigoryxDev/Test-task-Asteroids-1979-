@@ -14,11 +14,6 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
     public int Score { get; set; }
     public PoolObjectsTag Tag { get; set; }
 
-    private void Start()
-    {
-        app = App.Instance;
-    }
-
     public virtual void Update()
     {
         Move();
@@ -47,6 +42,8 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
 
     public virtual void OnObjectSpawn()
     {
+        app = App.Instance;
+        
         var enemy = app.GameInitSettings.GetEnemyData(type);
         Speed = enemy.speed;
         Score = enemy.score;

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fa5323b10fd5244be425b33365a353, type: 3}
   m_Name: GameInitSettings
   m_EditorClassIdentifier: 
-  livesNumber: 3
   wave: 1
   enemyPlusPerWave: 1
   enemies:
@@ -43,3 +42,7 @@ MonoBehaviour:
   - chance: 0.5
     minAmount: 1
     maxAmount: 5
+  rotateSpeed: 256
+  livesNumber: 3
+  speed: 5
+  invincebleTime: 2

@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waveNumberText: {fileID: 119781990}
-  ScoreText: {fileID: 1164635472}
+  scoreText: {fileID: 1164635472}
   livesNumberText: {fileID: 353122394}
 --- !u!1 &304709462
 GameObject:
@@ -944,6 +944,7 @@ MonoBehaviour:
   soundManager: {fileID: 712026509}
   gameManager: {fileID: 734570140}
   objectPooler: {fileID: 1985754472}
+  uI: {fileID: 501158923}
 --- !u!4 &789525513
 Transform:
   m_ObjectHideFlags: 0
@@ -1891,19 +1892,23 @@ MonoBehaviour:
   pools:
   - parentObject: {fileID: 708582507}
     tag: 0
-    prefab: {fileID: 0}
+    prefab: {fileID: 4029009878304331729, guid: 78d80fb095b0d71448cf978af6680a9b,
+      type: 3}
     initSize: 1
   - parentObject: {fileID: 2094862639}
     tag: 1
-    prefab: {fileID: 0}
+    prefab: {fileID: 1816048823944051151, guid: ca95e2494570b014fa45002419d0436a,
+      type: 3}
     initSize: 2
   - parentObject: {fileID: 304709463}
     tag: 2
-    prefab: {fileID: 0}
+    prefab: {fileID: 1889560682379973841, guid: 3a0e57cbc200f4f41bfbaa6b7dbf68da,
+      type: 3}
     initSize: 3
   - parentObject: {fileID: 1738356419}
     tag: 3
-    prefab: {fileID: 0}
+    prefab: {fileID: 4892488138091142972, guid: d85d49105fce7fc4fab6d169ef02cf29,
+      type: 3}
     initSize: 5
   - parentObject: {fileID: 757881693}
     tag: 4
