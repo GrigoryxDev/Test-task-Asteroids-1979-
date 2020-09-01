@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class UFO : BaseEnemy
+namespace Scripts.Enemies
 {
+    public class UFO : BaseEnemy
+    {
 
+    }
 }

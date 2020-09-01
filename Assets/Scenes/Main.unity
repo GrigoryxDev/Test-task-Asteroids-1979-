@@ -218,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &142655665
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2259,17 +2259,17 @@ MonoBehaviour:
     tag: 0
     prefab: {fileID: 4029009878304331729, guid: 78d80fb095b0d71448cf978af6680a9b,
       type: 3}
-    initSize: 1
+    initSize: 3
   - parentObject: {fileID: 2094862639}
     tag: 1
     prefab: {fileID: 1816048823944051151, guid: ca95e2494570b014fa45002419d0436a,
       type: 3}
-    initSize: 2
+    initSize: 4
   - parentObject: {fileID: 304709463}
     tag: 2
     prefab: {fileID: 1889560682379973841, guid: 3a0e57cbc200f4f41bfbaa6b7dbf68da,
       type: 3}
-    initSize: 3
+    initSize: 6
   - parentObject: {fileID: 1738356419}
     tag: 3
     prefab: {fileID: 4892488138091142972, guid: d85d49105fce7fc4fab6d169ef02cf29,

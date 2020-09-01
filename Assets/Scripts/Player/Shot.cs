@@ -4,40 +4,43 @@ using Scripts.Sound;
 using SpawnSystem;
 using UnityEngine;
 
-public class Shot : MonoBehaviour, IPooledObject
+namespace Scripts.PlayerSystem
 {
-    [SerializeField] float shotSpeed = 400f;
-    private Rigidbody2D m_Rigidbody2d;
-    public Rigidbody2D Rigidbody2d { get => m_Rigidbody2d ?? (m_Rigidbody2d = GetComponent<Rigidbody2D>()); }
-    public PoolObjectsTag Tag { get; set; }
-    private App app;
-    public void MakeShot(Transform playerTransform)
+    public class Shot : MonoBehaviour, IPooledObject
     {
-        app.SoundManager.PlaySFX(SoundsEnum.Laser.ToString());
-
-        transform.rotation = playerTransform.rotation;
-        transform.position = playerTransform.position;
-        Rigidbody2d.AddForce(playerTransform.up * shotSpeed);
-
-    }
-
-    public void OnObjectSpawn()
-    {
-        app = App.Instance;
-    }
-
-    public void OnReturnToPool()
-    {
-        app.ObjectPooler.ReturnToThePool(gameObject);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        var damagebleObject = other.GetComponent<IEnemy>();
-        if (damagebleObject != null)
+        [SerializeField] float shotSpeed = 400f;
+        private Rigidbody2D m_Rigidbody2d;
+        public Rigidbody2D Rigidbody2d { get => m_Rigidbody2d ?? (m_Rigidbody2d = GetComponent<Rigidbody2D>()); }
+        public PoolObjectsTag Tag { get; set; }
+        private App app;
+        public void MakeShot(Transform playerTransform)
         {
-            damagebleObject.Enemy.GetComponent<ITakeDMG>().TakeDMG();
-            OnReturnToPool();
+            app.SoundManager.PlaySFX(SoundsEnum.Laser.ToString());
+
+            transform.rotation = playerTransform.rotation;
+            transform.position = playerTransform.position;
+            Rigidbody2d.AddForce(playerTransform.up * shotSpeed);
+
+        }
+
+        public void OnObjectSpawn()
+        {
+            app = App.Instance;
+        }
+
+        public void OnReturnToPool()
+        {
+            app.ObjectPooler.ReturnToThePool(gameObject);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            var damagebleObject = other.GetComponent<IEnemy>();
+            if (damagebleObject != null)
+            {
+                damagebleObject.Enemy.GetComponent<ITakeDMG>().TakeDMG();
+                OnReturnToPool();
+            }
         }
     }
 }

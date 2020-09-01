@@ -49,17 +49,15 @@ namespace SpawnSystem
             var objectToSpawn = poolDictionary[tag].Count == 0 ? CreateInstance(tag) : poolDictionary[tag].Dequeue();
 
             objectToSpawn.SetActive(true);
-            objectToSpawn.transform.position = transform.position;
-            objectToSpawn.transform.rotation = Quaternion.identity;
-
             var pooledObj = objectToSpawn.GetComponent<IPooledObject>();
-
             if (pooledObj != null)
             {
                 pooledObj.Tag = tag;
                 pooledObj.OnObjectSpawn();
-
             }
+
+            objectToSpawn.transform.position = transform.position;
+            objectToSpawn.transform.rotation = Quaternion.identity;
 
             return objectToSpawn;
         }

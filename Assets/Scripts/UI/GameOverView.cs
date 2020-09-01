@@ -4,27 +4,30 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class GameOverView : BaseView
+namespace Scripts.UI
 {
-    public UnityAction OnReplay;
-
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text bestScoreText;
-
-    public Text ScoreText => scoreText;
-    public Text BestScoreText => bestScoreText;
-
-    private void Update()
+    public class GameOverView : BaseView
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        public UnityAction OnReplay;
+
+        [SerializeField] private Text scoreText;
+        [SerializeField] private Text bestScoreText;
+
+        public Text ScoreText => scoreText;
+        public Text BestScoreText => bestScoreText;
+
+        private void Update()
         {
-            Replay();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Replay();
+            }
         }
-    }
 
-    public void Replay()
-    {
-        OnReplay?.Invoke();
-    }
+        public void Replay()
+        {
+            OnReplay?.Invoke();
+        }
 
+    }
 }

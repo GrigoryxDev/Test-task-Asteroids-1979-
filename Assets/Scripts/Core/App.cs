@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Scripts.UI;
 using Scripts.Game;
 using Scripts.Sound;
 using SpawnSystem;
@@ -8,6 +9,9 @@ using UnityEngine;
 
 namespace Scripts.Core
 {
+    /// <summary>
+    /// Application base class. Contains links to all main systems.
+    /// </summary>
     public class App : Singleton<App>
     {
         [SerializeField] private GameInitSettings gameInitSettings;

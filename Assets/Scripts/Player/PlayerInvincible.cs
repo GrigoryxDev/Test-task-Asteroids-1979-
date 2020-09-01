@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInvincible : MonoBehaviour
+namespace Scripts.PlayerSystem
 {
-    public float InvincibleTime { get; set; }
-    public IEnumerator Countdown()
+    public class PlayerInvincible : MonoBehaviour
     {
-        yield return new WaitForSeconds(InvincibleTime);
-        RemoveInvincible();
-    }
+        public float InvincibleTime { get; set; }
+        public IEnumerator Countdown()
+        {
+            yield return new WaitForSeconds(InvincibleTime);
+            RemoveInvincible();
+        }
 
-    private void RemoveInvincible()
-    {
-        gameObject.SetActive(false);
+        private void RemoveInvincible()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿
-public enum EnemiesType
+﻿namespace Scripts.Enemies
 {
-    Large,
-    Med,
-    Small,
-    UFO
+    public enum EnemiesType
+    {
+        Large,
+        Med,
+        Small,
+        UFO
+    }
 }

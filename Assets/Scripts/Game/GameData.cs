@@ -1,14 +1,19 @@
-﻿
-public class GameData
+﻿namespace Scripts.Game
 {
-    public GameData(int waveNumber, int score)
+    /// <summary>
+    /// Class that stores game data
+    /// </summary>
+    public class GameData
     {
-        WaveNumber = waveNumber;
-        Score = score;
+        public GameData(int waveNumber, int score)
+        {
+            WaveNumber = waveNumber;
+            Score = score;
+        }
+
+        public int WaveNumber { get; set; }
+        public int Score { get; set; }
+
+
     }
-
-    public int WaveNumber { get; set; }
-    public int Score { get; set; }
-
-
 }

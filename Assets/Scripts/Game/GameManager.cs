@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Scripts.PlayerSystem;
 using Scripts.Core;
 using SpawnSystem;
 using UnityEngine;
@@ -9,17 +10,16 @@ namespace Scripts.Game
     public class GameManager : MonoBehaviour
     {
         private App app;
-        private GameUIUpdater gameUIUpdater;
         public int PlayerLives { get; private set; }
         public int EnemiesNumber { get; private set; }
-        public GameUIUpdater GameUIUpdater => gameUIUpdater;
-
+        public GameUIUpdater GameUIUpdater { get; private set; }
+        private Coroutine enemyCheck;
         private Player player;
 
         private void Start()
         {
             app = App.Instance;
-            gameUIUpdater = GetComponent<GameUIUpdater>();
+            GameUIUpdater = GetComponent<GameUIUpdater>();
         }
 
         private void NewGame()
@@ -89,8 +89,12 @@ namespace Scripts.Game
         public void OnKillEnemy(int score)
         {
             EnemiesNumber--;
+            if (enemyCheck != null)
+            {
+                StopCoroutine(enemyCheck);
+            }
 
-            StartCoroutine(CheckEnemies());
+            enemyCheck = StartCoroutine(CheckEnemies());
 
             GameUIUpdater.UpdateScore(score);
         }
@@ -109,15 +113,17 @@ namespace Scripts.Game
 
             for (int i = 0; i < asteroidsNumber; i++)
             {
-                var asteroid = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
                 OnSpawnEnemy();
+                var asteroid = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
+
                 asteroid.transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0);
 
             }
             for (int i = 0; i < ufoNumber; i++)
             {
-                var ufo = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.UFO);
                 OnSpawnEnemy();
+                var ufo = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.UFO);
+
                 ufo.transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0);
             }
         }

@@ -4,31 +4,34 @@ using Scripts.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewWaveCounter : MonoBehaviour
+namespace Scripts.Game
 {
-    [SerializeField] private Text newWaveCountdownText;
-
-
-    public void StartCountdown(float timeToWait)
+    public class NewWaveCounter : MonoBehaviour
     {
-        gameObject.SetActive(true);
-        StartCoroutine(Countdown(timeToWait));
-    }
+        [SerializeField] private Text newWaveCountdownText;
 
-    private IEnumerator Countdown(float time)
-    {
-        while (time > 0)
+
+        public void StartCountdown(float timeToWait)
         {
-            UpdateText(time);
-            yield return new WaitForSeconds(1f);
-            time--;
+            gameObject.SetActive(true);
+            StartCoroutine(Countdown(timeToWait));
         }
-        gameObject.SetActive(false);
-        App.Instance.GameManager.StartNewWave();
-    }
-    private void UpdateText(float time)
-    {
-        newWaveCountdownText.text = time.ToString("0");
-    }
 
+        private IEnumerator Countdown(float time)
+        {
+            while (time > 0)
+            {
+                UpdateText(time);
+                yield return new WaitForSeconds(1f);
+                time--;
+            }
+            gameObject.SetActive(false);
+            App.Instance.GameManager.StartNewWave();
+        }
+        private void UpdateText(float time)
+        {
+            newWaveCountdownText.text = time.ToString("0");
+        }
+
+    }
 }

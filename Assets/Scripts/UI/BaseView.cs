@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 
-public class BaseView : MonoBehaviour
+namespace Scripts.UI
 {
-    public virtual void ShowView()
+    public class BaseView : MonoBehaviour
     {
-        gameObject.SetActive(true);
-    }
+        public virtual void ShowView()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public virtual void HideView()
-    {
-        gameObject.SetActive(false);
+        public virtual void HideView()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

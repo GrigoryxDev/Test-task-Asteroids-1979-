@@ -5,92 +5,99 @@ using Scripts.Sound;
 using SpawnSystem;
 using UnityEngine;
 
-public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObject, IEnemy
+namespace Scripts.Enemies
 {
-    protected App app;
-    public EnemiesType type;
-    public float Speed { get; set; }
-    public int HP { get; set; }
-    public int Score { get; set; }
-    public PoolObjectsTag Tag { get; set; }
-    public GameObject Enemy => gameObject;
-
-    public virtual void Update()
-    {
-        Move();
-    }
 
     /// <summary>
-    /// moving in front, in world coordinates
+    /// Base class of all enemies in this project 
     /// </summary>
-    public virtual void Move()
+    public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObject, IEnemy
     {
-        transform.Translate(transform.up * Speed * Time.deltaTime, Space.World);
-    }
+        protected App app;
+        public EnemiesType type;
+        public float Speed { get; set; }
+        public int HP { get; set; }
+        public int Score { get; set; }
+        public PoolObjectsTag Tag { get; set; }
+        public GameObject Enemy => gameObject;
 
-    public virtual void TakeDMG()
-    {
-        app.SoundManager.PlaySFX(SoundsEnum.Hit.ToString());
-
-        HP--;
-
-        if (HP <= 0)
+        public virtual void Update()
         {
-            OnObjectDestroy();
+            Move();
         }
 
-    }
-
-    public virtual void OnObjectSpawn()
-    {
-        app = App.Instance;
-
-        var enemy = app.GameInitSettings.GetEnemyData(type);
-
-        Speed = enemy.speed;
-        Score = enemy.score;
-        HP = enemy.hp;
-
-        transform.localScale = new Vector3(enemy.scale, enemy.scale, enemy.scale);
-
-        StartMoving();
-    }
-
-    public virtual void OnObjectDestroy()
-    {
-        var explosion = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Explosion);
-        explosion.transform.position = transform.position;
-        app.GameManager.OnKillEnemy(Score);
-        OnReturnToPool();
-    }
-
-    public void OnReturnToPool()
-    {
-        app.ObjectPooler.ReturnToThePool(gameObject);
-    }
-
-    /// <summary>
-    /// Indicate the direction of movement
-    /// </summary>
-    protected virtual void StartMoving(float direction = 0.0f)
-    {
-        if (direction == 0.0f)
+        public virtual void Move()
         {
-            // if no direction choose a random direction to move in.
-            direction = Mathf.Floor(Random.Range(0.0f, 360.0f));
+            transform.Translate(transform.up * Speed * Time.deltaTime, Space.World);
         }
-        Vector3 rotation = new Vector3(0.0f, 0.0f, direction);
-        transform.rotation = Quaternion.Euler(rotation);
-    }
 
-    protected virtual void OnCollisionStay2D(Collision2D other)
-    {
-        var damagebleObject = other.gameObject.GetComponent<ITakeDMG>();
-        if (damagebleObject != null && other.gameObject.CompareTag("Player"))
+        public virtual void TakeDMG()
         {
-            damagebleObject.TakeDMG();
-            
-            TakeDMG();
+            app.SoundManager.PlaySFX(SoundsEnum.Hit.ToString());
+
+            HP--;
+
+            if (HP <= 0)
+            {
+                OnObjectDestroy();
+            }
+
+        }
+
+        public virtual void OnObjectSpawn()
+        {
+            app = App.Instance;
+
+            var enemy = app.GameInitSettings.GetEnemyData(type);
+
+            Speed = enemy.speed;
+            Score = enemy.score;
+            HP = enemy.hp;
+
+            transform.localScale = new Vector3(enemy.scale, enemy.scale, enemy.scale);
+
+            StartMoving();
+        }
+
+        public virtual void OnObjectDestroy()
+        {
+            var explosion = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Explosion);
+            explosion.transform.position = transform.position;
+            app.GameManager.OnKillEnemy(Score);
+            OnReturnToPool();
+        }
+
+        public void OnReturnToPool()
+        {
+            app.ObjectPooler.ReturnToThePool(gameObject);
+        }
+
+        /// <summary>
+        /// Indicate the direction of movement
+        /// </summary>
+        protected virtual void StartMoving(float direction = 0.0f)
+        {
+            if (direction == 0.0f)
+            {
+                // if no direction choose a random direction to move in.
+                direction = Mathf.Floor(Random.Range(0.0f, 360.0f));
+            }
+            Vector3 rotation = new Vector3(0.0f, 0.0f, direction);
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+        /// <summary>
+        /// Defines interaction with touching objects.
+        /// </summary>
+        /// <param name="other"> Collision object</param>
+        protected virtual void OnCollisionStay2D(Collision2D other)
+        {
+            var damagebleObject = other.gameObject.GetComponent<ITakeDMG>();
+            if (damagebleObject != null && other.gameObject.CompareTag("Player"))
+            {
+                damagebleObject.TakeDMG();
+
+                TakeDMG();
+            }
         }
     }
 }

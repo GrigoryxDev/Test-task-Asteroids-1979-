@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class MenuView : BaseView
+namespace Scripts.UI
 {
-    public UnityAction OnStart;
-
-    private void Update()
+    public class MenuView : BaseView
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        public UnityAction OnStart;
+
+        private void Update()
         {
-            StartGame();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartGame();
+            }
         }
-    }
 
-    public void StartGame()
-    {
-        OnStart?.Invoke();
+        public void StartGame()
+        {
+            OnStart?.Invoke();
+        }
     }
 }
