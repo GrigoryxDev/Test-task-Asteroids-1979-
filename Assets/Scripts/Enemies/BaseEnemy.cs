@@ -75,7 +75,7 @@ namespace Scripts.Enemies
         /// <summary>
         /// Indicate the direction of movement
         /// </summary>
-        protected virtual void StartMoving(float direction = 0.0f)
+        public virtual void StartMoving(float direction = 0.0f)
         {
             if (direction == 0.0f)
             {
