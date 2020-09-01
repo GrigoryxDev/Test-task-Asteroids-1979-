@@ -6,6 +6,8 @@ Test implementation of Asteroids 1979.
 
 Сontrol buttons 🎮 A,D - rotation W - Acceleration F - Shot  SPACE  - start game
 
+Space background from [Unity free asset](https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633)
+
 SFx from [here](https://github.com/Kavex/GameSounds) 🎼
 
 BackGround music 🎧
