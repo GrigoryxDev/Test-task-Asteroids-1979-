@@ -5,6 +5,7 @@
 Test implementation of Asteroids 1979.
 Reworked date: 01.09.2020
 
+Web demo: [WebGLBuild](https://xmasterxx.github.io/Test-task-Asteroids-1979-/)
 
 Сontrol buttons 🎮 A,D - rotation W - Acceleration F - Shot  SPACE  - start game
 
