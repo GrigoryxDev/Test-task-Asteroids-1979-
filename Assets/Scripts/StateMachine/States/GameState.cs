@@ -13,9 +13,7 @@ namespace StateMachine.States
             Owner.UI.GameView.OnGameOver += GameOver;
 
             Owner.UI.GameView.ShowView();
-
-            App.Instance.GameManager.NewGame();
-
+            App.Instance.GameManager.ResetGame();
         }
 
         public override void DestroyState()
@@ -29,9 +27,7 @@ namespace StateMachine.States
 
         private void GameOver()
         {
-
-
-
+            Owner.ChangeState(new GameOverState());
         }
 
     }

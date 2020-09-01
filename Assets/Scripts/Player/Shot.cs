@@ -11,19 +11,19 @@ public class Shot : MonoBehaviour, IPooledObject
     public Rigidbody2D Rigidbody2d { get => m_Rigidbody2d ?? (m_Rigidbody2d = GetComponent<Rigidbody2D>()); }
     public PoolObjectsTag Tag { get; set; }
     private App app;
-
     public void MakeShot(Transform playerTransform)
     {
+        app.SoundManager.PlaySFX(SoundsEnum.Laser.ToString());
+
         transform.rotation = playerTransform.rotation;
         transform.position = playerTransform.position;
         Rigidbody2d.AddForce(playerTransform.up * shotSpeed);
+
     }
 
     public void OnObjectSpawn()
     {
         app = App.Instance;
-
-        app.SoundManager.PlaySFX(SoundsEnum.Laser.ToString());
     }
 
     public void OnReturnToPool()
@@ -33,10 +33,11 @@ public class Shot : MonoBehaviour, IPooledObject
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var damagebleObject = other.GetComponent<ITakeDMG>();
+        var damagebleObject = other.GetComponent<IEnemy>();
         if (damagebleObject != null)
         {
-            damagebleObject.TakeDMG();
+            damagebleObject.Enemy.GetComponent<ITakeDMG>().TakeDMG();
+            OnReturnToPool();
         }
     }
 }

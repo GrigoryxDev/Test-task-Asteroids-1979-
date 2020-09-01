@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameInitSettings", menuName = "ScriptableObjects/GameInitSettings", order = 0)]
 public class GameInitSettings : ScriptableObject
 {
+    [SerializeField, Header("Time between waves")] private float timeBetweenWaves = 3;
     [SerializeField, Header("First wave number")] private int wave = 1;
     [SerializeField, Header("Increase enemies per wave")] private int enemyPlusPerWave = 1;
 
@@ -20,15 +21,15 @@ public class GameInitSettings : ScriptableObject
 
     public GameData GameData { get; private set; }
     public int LivesNumber => livesNumber;
-    public int Wave => wave;
     public int EnemyPlusPerWave => enemyPlusPerWave;
     public float RotateSpeed => rotateSpeed;
     public float Speed => speed;
     public float InvincebleTime => invincebleTime;
+    public float TimeBetweenWaves => timeBetweenWaves;
 
     public void NewGameData()
     {
-        GameData = new GameData(Wave, 0);
+        GameData = new GameData(wave, 0);
         enemyDict = new Dictionary<EnemiesType, Enemies>();
 
         foreach (var item in enemies)
@@ -37,14 +38,7 @@ public class GameInitSettings : ScriptableObject
             {
                 enemyDict.Add(item.type, item);
             }
-
         }
-    }
-
-    public void UpdateScore(int wave, int score)
-    {
-        GameData.WaveNumber = wave;
-        GameData.Score += score;
     }
 
     public Enemies GetEnemyData(EnemiesType type)

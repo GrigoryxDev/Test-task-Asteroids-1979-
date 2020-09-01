@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour, IMovable
 {
+    [SerializeField] private ParticleSystem particles;
     public float RotateSpeed { get; set; }
     public float Speed { get; set; }
 
@@ -11,10 +12,18 @@ public class PlayerMove : MonoBehaviour, IMovable
 
     public Rigidbody2D Rigidbody2d => rigidbody2d ?? (rigidbody2d = GetComponent<Rigidbody2D>());
 
-
     private void FixedUpdate()
     {
         Move();
+
+        if (Rigidbody2d.velocity.sqrMagnitude > 0.1f && !particles.isPlaying)
+        {
+            particles.Play();
+        }
+        else if (Rigidbody2d.velocity.sqrMagnitude < 0.1f && particles.isPlaying)
+        {
+            particles.Stop();
+        }
     }
 
     public void Move()
@@ -35,7 +44,6 @@ public class PlayerMove : MonoBehaviour, IMovable
         if (Input.GetKey(KeyCode.W))
         {
             Rigidbody2d.AddForce(transform.up * Speed);
-
         }
     }
 }

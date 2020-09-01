@@ -56,8 +56,9 @@ namespace SpawnSystem
 
             if (pooledObj != null)
             {
-                pooledObj.OnObjectSpawn();
                 pooledObj.Tag = tag;
+                pooledObj.OnObjectSpawn();
+
             }
 
             return objectToSpawn;

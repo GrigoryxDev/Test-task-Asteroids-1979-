@@ -7,16 +7,17 @@ using UnityEngine;
 public class Player : MonoBehaviour, IPooledObject, ITakeDMG
 {
     [SerializeField] private PlayerMove playerMove;
+    [SerializeField] private GameObject invincebleGO;
     private App app;
     public PoolObjectsTag Tag { get; set; }
     public int HP { get; set; }
 
     public void TakeDMG()
     {
-        if (GetComponent<PlayerInvincible>() == null)
+        if (GetComponentInChildren<PlayerInvincible>() == null)
         {
             HP--;
-            app.GameManager.DestroyPlayer();
+            app.GameManager.OnDestroyPlayer();
             OnObjectDestroy();
         }
 
@@ -33,13 +34,20 @@ public class Player : MonoBehaviour, IPooledObject, ITakeDMG
     public void OnObjectSpawn()
     {
         app = App.Instance;
-
-        playerMove.gameObject.AddComponent<PlayerInvincible>();
-        GetComponent<PlayerInvincible>().invincibleTime = app.GameInitSettings.InvincebleTime;
         playerMove.RotateSpeed = app.GameInitSettings.RotateSpeed;
         playerMove.Speed = app.GameInitSettings.Speed;
+        AddInvinceble();
     }
 
+
+    public void AddInvinceble()
+    {
+        invincebleGO.SetActive(true);
+
+        var invincible = invincebleGO.GetComponent<PlayerInvincible>();
+        invincible.InvincibleTime = app.GameInitSettings.InvincebleTime;
+        StartCoroutine(invincible.Countdown());
+    }
     public void OnReturnToPool()
     {
         app.ObjectPooler.ReturnToThePool(gameObject);

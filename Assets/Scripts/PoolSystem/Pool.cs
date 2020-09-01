@@ -6,6 +6,7 @@ namespace SpawnSystem
     public struct Pool
     {
         public Transform parentObject;
+        
         public PoolObjectsTag tag;
 
         public GameObject prefab;

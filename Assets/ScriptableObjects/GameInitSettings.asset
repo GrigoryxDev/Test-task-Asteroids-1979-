@@ -45,4 +45,4 @@ MonoBehaviour:
   rotateSpeed: 256
   livesNumber: 3
   speed: 5
-  invincebleTime: 2
+  invincebleTime: 5

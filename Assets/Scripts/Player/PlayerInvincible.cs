@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class PlayerInvincible : MonoBehaviour
 {
-    public float invincibleTime { get; set; }
-
-
+    public float InvincibleTime { get; set; }
     public IEnumerator Countdown()
     {
-        yield return new WaitForSeconds(invincibleTime);
+        yield return new WaitForSeconds(InvincibleTime);
         RemoveInvincible();
     }
 
     private void RemoveInvincible()
     {
-        Destroy(this);
+        gameObject.SetActive(false);
     }
 }

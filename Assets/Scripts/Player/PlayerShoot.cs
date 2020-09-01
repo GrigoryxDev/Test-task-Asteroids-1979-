@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     private App app;
+    [SerializeField] private ParticleSystem shotParticles;
 
     private void Start()
     {
@@ -16,8 +17,10 @@ public class PlayerShoot : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            shotParticles.Play();
             var shot = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Shoot);
             shot.GetComponent<Shot>().MakeShot(transform);
+
         }
     }
 }

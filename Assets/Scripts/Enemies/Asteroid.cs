@@ -15,11 +15,8 @@ public class Asteroid : BaseEnemy
                 if (random < medAstr.chance)
                 {
                     var childNumber = Random.Range(medAstr.minAmount, medAstr.maxAmount);
-                    for (int i = 0; i < childNumber; i++)
-                    {
-                        var asteroidMed = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
-                        asteroidMed.GetComponent<Asteroid>().type = EnemiesType.Med;
-                    }
+
+                    AsteroidBuckShot(childNumber, EnemiesType.Med);
                 }
                 break;
             case EnemiesType.Med:
@@ -27,11 +24,7 @@ public class Asteroid : BaseEnemy
                 if (random < smallAstr.chance)
                 {
                     var childNumber = Random.Range(smallAstr.minAmount, smallAstr.maxAmount);
-                    for (int i = 0; i < childNumber; i++)
-                    {
-                        var asteroidSmall = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
-                        asteroidSmall.GetComponent<Asteroid>().type = EnemiesType.Small;
-                    }
+                    AsteroidBuckShot(childNumber, EnemiesType.Small);
                 }
                 break;
         }
@@ -39,5 +32,20 @@ public class Asteroid : BaseEnemy
         type = EnemiesType.Large;
 
         base.OnObjectDestroy();
+    }
+
+    private void AsteroidBuckShot(int childNumber, EnemiesType type)
+    {
+        for (int i = 0; i < childNumber; i++)
+        {
+            var asteroidMed = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
+            app.GameManager.OnSpawnEnemy();
+            var asteroid = asteroidMed.GetComponent<Asteroid>();
+            asteroid.type = type;
+            asteroidMed.transform.position = transform.position;
+
+            asteroid.OnObjectSpawn();
+        }
+
     }
 }

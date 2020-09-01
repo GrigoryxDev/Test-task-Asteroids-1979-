@@ -10,13 +10,32 @@ namespace SpawnSystem
     public class AutoReturnPooled : MonoBehaviour
     {
         [SerializeField] private float time;
+        private Coroutine coroutine;
 
         private void OnEnable()
         {
-            StartCoroutine(StartCountdown());
+            StartCountdown();
         }
 
-        private IEnumerator StartCountdown()
+        private void OnDisable()
+        {
+            StopCountdown();
+        }
+
+        public void StartCountdown()
+        {
+            coroutine = StartCoroutine(Countdown());
+        }
+
+        public void StopCountdown()
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator Countdown()
         {
             yield return new WaitForSeconds(time);
             GetComponent<IPooledObject>().OnReturnToPool();

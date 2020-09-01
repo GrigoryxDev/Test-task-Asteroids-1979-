@@ -5,7 +5,7 @@ using Scripts.Sound;
 using SpawnSystem;
 using UnityEngine;
 
-public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObject
+public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObject, IEnemy
 {
     protected App app;
     public EnemiesType type;
@@ -13,6 +13,7 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
     public int HP { get; set; }
     public int Score { get; set; }
     public PoolObjectsTag Tag { get; set; }
+    public GameObject Enemy => gameObject;
 
     public virtual void Update()
     {
@@ -43,12 +44,14 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
     public virtual void OnObjectSpawn()
     {
         app = App.Instance;
-        
+
         var enemy = app.GameInitSettings.GetEnemyData(type);
+
         Speed = enemy.speed;
         Score = enemy.score;
         HP = enemy.hp;
-        transform.localScale = Vector3.one * enemy.scale;
+
+        transform.localScale = new Vector3(enemy.scale, enemy.scale, enemy.scale);
 
         StartMoving();
     }
@@ -57,8 +60,7 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
     {
         var explosion = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Explosion);
         explosion.transform.position = transform.position;
-        app.GameManager.UpdateScore(Score);
-
+        app.GameManager.OnKillEnemy(Score);
         OnReturnToPool();
     }
 
@@ -70,7 +72,7 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
     /// <summary>
     /// Indicate the direction of movement
     /// </summary>
-    public virtual void StartMoving(float direction = 0.0f)
+    protected virtual void StartMoving(float direction = 0.0f)
     {
         if (direction == 0.0f)
         {
@@ -79,5 +81,16 @@ public abstract class BaseEnemy : MonoBehaviour, IMovable, ITakeDMG, IPooledObje
         }
         Vector3 rotation = new Vector3(0.0f, 0.0f, direction);
         transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    protected virtual void OnCollisionStay2D(Collision2D other)
+    {
+        var damagebleObject = other.gameObject.GetComponent<ITakeDMG>();
+        if (damagebleObject != null && other.gameObject.CompareTag("Player"))
+        {
+            damagebleObject.TakeDMG();
+            
+            TakeDMG();
+        }
     }
 }

@@ -9,42 +9,65 @@ namespace Scripts.Game
     public class GameManager : MonoBehaviour
     {
         private App app;
+        private GameUIUpdater gameUIUpdater;
         public int PlayerLives { get; private set; }
         public int EnemiesNumber { get; private set; }
+        public GameUIUpdater GameUIUpdater => gameUIUpdater;
+
+        private Player player;
 
         private void Start()
         {
             app = App.Instance;
+            gameUIUpdater = GetComponent<GameUIUpdater>();
         }
 
-        public void NewGame()
+        private void NewGame()
         {
             app.GameInitSettings.NewGameData();
             PlayerLives = app.GameInitSettings.LivesNumber;
 
+            GameUIUpdater.UpdatePlayerLives();
+            GameUIUpdater.UpdateUIText();
 
-            StartNewWave();
             SpawnPlayer();
+
+            StartWaveCountdown();
         }
 
-        public void UpdateScore(int score)
+        private void StartWaveCountdown()
         {
-            app.GameInitSettings.UpdateScore(app.GameInitSettings.Wave, score);
+            app.GetUI.GameView.Countdown.StartCountdown(app.GameInitSettings.TimeBetweenWaves);
+        }
 
-            UpdateUIText();
+        private void EndGame()
+        {
+            app.GetUI.GameView.GameOver();
         }
 
         private void SpawnPlayer()
         {
-            var player = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Player);
-            player.GetComponent<Player>().HP = PlayerLives;
+            var playerGO = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Player);
+            player = playerGO.GetComponent<Player>();
+            player.HP = PlayerLives;
             player.transform.position = Vector3.zero;
         }
 
-        public void DestroyPlayer()
+        private IEnumerator CheckEnemies()
+        {
+            yield return new WaitForFixedUpdate();
+            if (EnemiesNumber <= 0)
+            {
+                app.GameInitSettings.GameData.WaveNumber++;
+
+                StartWaveCountdown();
+            }
+        }
+
+        public void OnDestroyPlayer()
         {
             PlayerLives--;
-            UpdatePlayerLives();
+            GameUIUpdater.UpdatePlayerLives();
 
             if (PlayerLives <= 0)
             {
@@ -54,56 +77,61 @@ namespace Scripts.Game
             }
             else
             {
-
+                SpawnPlayer();
             }
         }
 
-        public void UpdatePlayerLives()
+        public void OnSpawnEnemy()
         {
-            var livesText = app.GetUI.GameView.LivesNumberText;
-            livesText.text = $"x{PlayerLives}";
+            EnemiesNumber++;
         }
 
-        private void StartNewWave()
+        public void OnKillEnemy(int score)
         {
+            EnemiesNumber--;
+
+            StartCoroutine(CheckEnemies());
+
+            GameUIUpdater.UpdateScore(score);
+        }
+
+        public void StartNewWave()
+        {
+            if (player != null)
+            {
+                player.AddInvinceble();
+            }
+
             var gameSettings = app.GameInitSettings;
             var enemyNumber = gameSettings.GameData.WaveNumber + gameSettings.EnemyPlusPerWave;
             var asteroidsNumber = Random.Range(1, enemyNumber - 1);
             var ufoNumber = enemyNumber - asteroidsNumber;
 
-            EnemiesNumber = asteroidsNumber + ufoNumber;
-
             for (int i = 0; i < asteroidsNumber; i++)
             {
                 var asteroid = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
-
+                OnSpawnEnemy();
                 asteroid.transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0);
 
             }
             for (int i = 0; i < ufoNumber; i++)
             {
                 var ufo = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.UFO);
-
+                OnSpawnEnemy();
                 ufo.transform.position = new Vector3(Random.Range(-10, 10), Random.Range(-7, 7), 0);
             }
-
-            UpdateUIText();
         }
 
-        private void UpdateUIText()
+        public void ResetGame()
         {
-            var scoreText = app.GetUI.GameView.ScoreText;
-            var waveText = app.GetUI.GameView.WaveNumberText;
-            var gameData = app.GameInitSettings.GameData;
+            var Array = app.ObjectPooler.gameObject.GetComponentsInChildren<IEnemy>();
 
-            scoreText.text = gameData.Score.ToString();
-            waveText.text = gameData.WaveNumber.ToString();
-        }
-
-        private void EndGame()
-        {
-
-            app.GetUI.GameView.GameOver();
+            foreach (var item in Array)
+            {
+                item.Enemy.GetComponent<IPooledObject>().OnReturnToPool();
+            }
+            EnemiesNumber = 0;
+            NewGame();
         }
     }
 }

@@ -12,6 +12,8 @@ namespace StateMachine.States
             Owner.UI.MenuView.OnStart += StartGame;
 
             Owner.UI.MenuView.ShowView();
+            Owner.UI.GameView.HideView();
+            Owner.UI.GameOverView.HideView();
 
         }
 
