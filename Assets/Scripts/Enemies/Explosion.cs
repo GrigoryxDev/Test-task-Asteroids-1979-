@@ -25,7 +25,7 @@ namespace Scripts.Enemies
         public void OnObjectSpawn()
         {
             transform.localScale = Vector3.one;
-            scaleChange = new Vector3(-0.01f, -0.01f, -0.01f);
+            scaleChange = new Vector3(-0.03f, -0.03f, -0.03f);
             App.Instance.SoundManager.PlaySFX(SoundsEnum.Explosion.ToString());
         }
 

@@ -63,13 +63,13 @@ namespace Scripts.Enemies
         {
             var explosion = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Explosion);
             explosion.transform.position = transform.position;
-            app.GameManager.OnKillEnemy(Score);
             OnReturnToPool();
         }
 
         public void OnReturnToPool()
         {
             app.ObjectPooler.ReturnToThePool(gameObject);
+            app.GameManager.OnKillEnemy(Score);
         }
 
         /// <summary>

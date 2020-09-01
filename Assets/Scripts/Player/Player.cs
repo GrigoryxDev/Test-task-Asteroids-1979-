@@ -50,6 +50,7 @@ namespace Scripts.PlayerSystem
             invincible.InvincibleTime = app.GameInitSettings.InvincebleTime;
             StartCoroutine(invincible.Countdown());
         }
+        
         public void OnReturnToPool()
         {
             app.ObjectPooler.ReturnToThePool(gameObject);

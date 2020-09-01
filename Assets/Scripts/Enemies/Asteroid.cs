@@ -41,7 +41,6 @@ namespace Scripts.Enemies
         {
             for (int i = 0; i < childNumber; i++)
             {
-                app.GameManager.OnSpawnEnemy();
                 var asteroidMed = app.ObjectPooler.SpawnFromPool(PoolObjectsTag.Asteroid);
                 var asteroid = asteroidMed.GetComponent<Asteroid>();
                 asteroid.type = type;
