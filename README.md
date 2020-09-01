@@ -3,6 +3,8 @@
 
 
 Test implementation of Asteroids 1979.
+Reworked date: 01.09.2020
+
 
 Сontrol buttons 🎮 A,D - rotation W - Acceleration F - Shot  SPACE  - start game
 
